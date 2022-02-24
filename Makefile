@@ -1,17 +1,11 @@
-# import config.
-cnf ?= config.env
-include $(cnf)
-export $(shell sed 's/=.*//' $(cnf))
 
-current_dir = $(shell pwd)
+start:
+	docker-compose up -d
 
-# DOCKER TASKS
-# Build the container
-build: ## Build the container
-	docker build . -t $(APP_NAME)
+stop:
+	docker-compose down
 
-run: ## Run container on port configured in `config.env`
-	docker run --rm -dit -p $(PORT):$(PORT)/tcp -v $(current_dir):/usr/src/nodejs-training --name $(APP_NAME) $(APP_NAME)
-
-stop: ## Stop and remove a running container
-	docker stop $(APP_NAME); docker rm $(APP_NAME)
+remove:
+	docker-compose down
+	docker image rm isaiasjt/nodejs-training-backend
+	docker volume prune -f

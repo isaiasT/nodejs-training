@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+    nodejs-training:
+        container_name: nodejs-training-backend
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: isaiasjt/nodejs-training-backend
+        ports:
+            - 3000:3000
+        volumes:
+            - .:/usr/src/nodejs-training
+        depends_on:
+            - mariadb
+
+    mariadb:
+        image: mariadb:latest
+        container_name: mariadb
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_DATABASE: "${MYSQL_DATABASE}"
+            MYSQL_USER: "${MYSQL_USER}"
+            MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+            MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"

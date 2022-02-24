@@ -1,9 +1,13 @@
 # nodejs-training
 
-## Build docker image
+## Build and run docker images:
 
-    make build
+    make start
 
-## Run docker image
+## Stop docker containers:
 
-    make run
+    make stop
+
+## Remove docker nodejs-training-backend image and container, prune unused volumes: 
+
+    make remove
