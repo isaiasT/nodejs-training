@@ -8,6 +8,6 @@
 
     make stop
 
-## Remove docker nodejs-training-backend image and container, prune unused volumes: 
+## Remove docker nodejs-training-backend image and container, prune unused volumes:
 
     make remove
