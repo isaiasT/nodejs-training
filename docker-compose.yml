@@ -20,10 +20,10 @@ services:
         ports:
             - 3306:3306
         environment:
-            MYSQL_DATABASE: '${MYSQL_DATABASE}'
-            MYSQL_USER: '${MYSQL_USER}'
-            MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
-            MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+            MYSQL_DATABASE: '${TYPEORM_DATABASE}'
+            MYSQL_USER: '${TYPEORM_USERNAME}'
+            MYSQL_PASSWORD: '${TYPEORM_PASSWORD}'
+            MYSQL_ROOT_PASSWORD: '${TYPEORM_PASSWORD}'
         volumes:
             - mariadb-volume:/var/lib/mysql
 

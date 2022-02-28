@@ -9,3 +9,6 @@ remove:
 	docker-compose down
 	docker image rm isaiasjt/nodejs-training-backend
 	docker volume prune -f
+
+run-migrations:
+	npm run typeorm migration:run
