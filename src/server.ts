@@ -4,6 +4,7 @@ import 'dotenv/config';
 import Rollbar from 'rollbar';
 import { createConnection } from 'typeorm';
 import userRoutes from './api/User.routes';
+import clientRoutes from './api/Client.routes';
 
 createConnection().then(() => {
     const app = express();
@@ -28,6 +29,7 @@ createConnection().then(() => {
     app.use(rollbar.errorHandler());
 
     app.use('/', userRoutes);
+    app.use('/', clientRoutes);
 
     app.listen(port, () => {
         console.log(`NodeJS Training running on port ${port}`);
