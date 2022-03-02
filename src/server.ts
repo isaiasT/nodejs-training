@@ -18,13 +18,14 @@ createConnection().then(() => {
     });
 
     app.get('/', (_req: Request, res: Response) => {
-        res.send('Hello World!');
+        res.send('API under construction');
     });
 
-    app.post('/login', (req: Request, res: Response) => {
-        res.send('Welcome, ' + req.body.username);
-        rollbar.log('Welcome, ' + req.body.username);
+    app.get('/query', (req: Request, res: Response) => {
+        res.send(req.query);
     });
+
+    app.use(rollbar.errorHandler());
 
     app.use('/', userRoutes);
 
