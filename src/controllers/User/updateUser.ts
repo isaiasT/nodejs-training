@@ -1,4 +1,4 @@
-import { UpdateUser } from '../../core/useCases';
+import { UpdateUser } from '../../core/useCases/User';
 import { Response, Request } from 'express';
 
 const UpdateUserController = async (req: Request, res: Response) => {

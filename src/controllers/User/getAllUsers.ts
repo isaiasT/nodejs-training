@@ -1,4 +1,4 @@
-import { GetAllUsers } from '../../core/useCases';
+import { GetAllUsers } from '../../core/useCases/User';
 import { Response, Request } from 'express';
 
 const GetAllUsersController = async (_req: Request, res: Response) => {

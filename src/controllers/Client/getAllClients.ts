@@ -1,4 +1,4 @@
-import { GetAllClients } from '../../core/useCases';
+import { GetAllClients } from '../../core/useCases/Client';
 import { Response, Request } from 'express';
 
 const GetAllClientsController = async (_req: Request, res: Response) => {

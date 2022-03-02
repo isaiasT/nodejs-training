@@ -1,4 +1,4 @@
-import { CreateJobRequest } from '../../core/useCases';
+import { CreateJobRequest } from '../../core/useCases/JobRequest';
 import { Response, Request } from 'express';
 
 const CreateJobRequestController = async (req: Request, res: Response) => {

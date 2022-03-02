@@ -1,4 +1,4 @@
-import { CreateUser } from '../../core/useCases';
+import { CreateUser } from '../../core/useCases/User';
 import { Response, Request } from 'express';
 
 const CreateUserController = async (req: Request, res: Response) => {

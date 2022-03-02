@@ -1,4 +1,4 @@
-import { UpdateClient } from '../../core/useCases';
+import { UpdateClient } from '../../core/useCases/Client';
 import { Response, Request } from 'express';
 
 const UpdateClientController = async (req: Request, res: Response) => {

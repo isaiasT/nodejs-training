@@ -1,4 +1,4 @@
-import { UpdateJobRequest } from '../../core/useCases';
+import { UpdateJobRequest } from '../../core/useCases/JobRequest';
 import { Response, Request } from 'express';
 
 const UpdateJobRequestController = async (req: Request, res: Response) => {

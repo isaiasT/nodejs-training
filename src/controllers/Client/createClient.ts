@@ -1,4 +1,4 @@
-import { CreateClient } from '../../core/useCases';
+import { CreateClient } from '../../core/useCases/Client';
 import { Response, Request } from 'express';
 
 const CreateClientController = async (req: Request, res: Response) => {

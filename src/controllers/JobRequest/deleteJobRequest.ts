@@ -1,4 +1,4 @@
-import { DeleteJobRequest } from '../../core/useCases';
+import { DeleteJobRequest } from '../../core/useCases/JobRequest';
 import { Response, Request } from 'express';
 
 const DeleteJobRequestController = async (req: Request, res: Response) => {

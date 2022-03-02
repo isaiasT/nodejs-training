@@ -1,4 +1,4 @@
-import { DeleteUser } from '../../core/useCases';
+import { DeleteUser } from '../../core/useCases/User';
 import { Response, Request } from 'express';
 
 const DeleteUserController = async (req: Request, res: Response) => {

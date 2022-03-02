@@ -1,4 +1,4 @@
-import { DeleteClient } from '../../core/useCases';
+import { DeleteClient } from '../../core/useCases/Client';
 import { Response, Request } from 'express';
 
 const DeleteClientController = async (req: Request, res: Response) => {

@@ -6,6 +6,7 @@ import { createConnection } from 'typeorm';
 import userRoutes from './api/User.routes';
 import clientRoutes from './api/Client.routes';
 import jobRequestRoutes from './api/JobRequest.routes';
+import candidacyRoutes from './api/Candidacy.routes';
 
 createConnection().then(() => {
     const app = express();
@@ -32,6 +33,7 @@ createConnection().then(() => {
     app.use('/', userRoutes);
     app.use('/', clientRoutes);
     app.use('/', jobRequestRoutes);
+    app.use('/', candidacyRoutes);
 
     app.listen(port, () => {
         console.log(`NodeJS Training running on port ${port}`);
