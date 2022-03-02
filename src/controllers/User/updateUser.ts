@@ -4,9 +4,10 @@ import { Response, Request } from 'express';
 const UpdateUserController = async (req: Request, res: Response) => {
     const results = await UpdateUser({
         id: req.params.id,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        name: req.body.name,
+        availability: req.body.availability,
         email: req.body.email,
+        country: req.body.country,
     });
     res.json(results);
 };

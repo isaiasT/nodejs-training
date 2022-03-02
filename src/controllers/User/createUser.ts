@@ -3,9 +3,10 @@ import { Response, Request } from 'express';
 
 const CreateUserController = async (req: Request, res: Response) => {
     const results = await CreateUser({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        name: req.body.name,
+        availability: req.body.availability,
         email: req.body.email,
+        country: req.body.country,
     });
     res.json(results);
 };

@@ -6,16 +6,18 @@ export type GetUserByIdParams = {
 };
 
 export type CreateUserParams = {
-    firstName: string;
-    lastName: string;
+    name: string;
+    availability: string;
     email: string;
+    country: string;
 };
 
 export type UpdateUserParams = {
     id: string;
-    firstName?: string;
-    lastName?: string;
+    name?: string;
+    availability?: string;
     email?: string;
+    country?: string;
 };
 
 export type DeleteUserParams = {
