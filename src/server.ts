@@ -7,6 +7,7 @@ import userRoutes from './api/User.routes';
 import clientRoutes from './api/Client.routes';
 import jobRequestRoutes from './api/JobRequest.routes';
 import candidacyRoutes from './api/Candidacy.routes';
+import placementRoutes from './api/Placement.routes';
 
 createConnection().then(() => {
     const app = express();
@@ -34,6 +35,7 @@ createConnection().then(() => {
     app.use('/', clientRoutes);
     app.use('/', jobRequestRoutes);
     app.use('/', candidacyRoutes);
+    app.use('/', placementRoutes);
 
     app.listen(port, () => {
         console.log(`NodeJS Training running on port ${port}`);
