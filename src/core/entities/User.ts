@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import Placement from './Placement';
 
 @Entity()
 export default class User {
@@ -16,4 +17,7 @@ export default class User {
 
     @Column()
     country: string;
+
+    @OneToMany(() => Placement, (placement) => placement.user)
+    placements: Placement[];
 }

@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import JobRequest from './JobRequest';
+import Placement from './Placement';
 
 @Entity()
 export default class Client {
@@ -10,4 +12,10 @@ export default class Client {
 
     @Column()
     country: string;
+
+    @OneToMany(() => JobRequest, (jobRequest) => jobRequest.client)
+    jobRequests: JobRequest[];
+
+    @OneToMany(() => Placement, (placement) => placement.client)
+    placements: Placement[];
 }
