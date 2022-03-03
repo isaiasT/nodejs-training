@@ -9,4 +9,4 @@
   service: nodejs-training-backend
   steps:
       - name: 'Run tests'
-        command: run test
+        command: npm test
