@@ -2,7 +2,7 @@
   type: parallel
   steps:
       - service: nodejs-training-backend
-        command: exec -c 'echo warmed-up!'
+        command: /bin/bash -c 'ls && echo ${CI_BUILD_ID}'
 
 - name: 'Test'
   type: serial
