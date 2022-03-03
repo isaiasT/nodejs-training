@@ -1,3 +1,8 @@
+- name: 'Build'
+  type: parallel
+  steps:
+      - service: nodejs-training-backend
+
 - name: 'Test'
   type: serial
   service: nodejs-training-backend
