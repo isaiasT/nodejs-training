@@ -1,5 +1,5 @@
 services:
     nodejs-training-backend:
         build:
-            image: nodejs-training-backend
+            image: isaiasjt/nodejs-training-backend
             dockerfile: Dockerfile
