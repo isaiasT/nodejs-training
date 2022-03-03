@@ -1,17 +1,14 @@
 import express, { Response, Request } from 'express';
 import bodyParser from 'body-parser';
-import 'dotenv/config';
 import Rollbar from 'rollbar';
-import { createConnection } from 'typeorm';
 import userRoutes from './api/User.routes';
 import clientRoutes from './api/Client.routes';
 import jobRequestRoutes from './api/JobRequest.routes';
 import candidacyRoutes from './api/Candidacy.routes';
 import placementRoutes from './api/Placement.routes';
 
-createConnection().then(() => {
+const Server = () => {
     const app = express();
-    const port = 3000;
 
     app.use(bodyParser.json());
 
@@ -37,7 +34,7 @@ createConnection().then(() => {
     app.use('/', candidacyRoutes);
     app.use('/', placementRoutes);
 
-    app.listen(port, () => {
-        console.log(`NodeJS Training running on port ${port}`);
-    });
-});
+    return app;
+};
+
+export { Server };
