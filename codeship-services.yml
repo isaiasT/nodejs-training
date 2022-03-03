@@ -1,5 +1,4 @@
-services:
-    nodejs-training-backend:
-        build:
-            image: nodejs-training-backend
-            dockerfile: Dockerfile
+nodejs-training-backend:
+    build:
+        image: nodejs-training-backend
+        dockerfile: Dockerfile
