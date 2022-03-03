@@ -1,9 +1,11 @@
 - name: 'Build'
+  type: serial
   steps:
       - service: nodejs-training-backend
         command: /bin/bash -c 'ls && echo ${CI_BUILD_ID}'
 
 - name: 'Test'
+  type: serial
   service: nodejs-training-backend
   steps:
       - name: 'Run tests'
