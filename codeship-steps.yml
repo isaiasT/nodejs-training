@@ -1,7 +1,8 @@
 - name: 'Build'
   type: parallel
   steps:
-      - service: nodejs-training-backend
+      - service: us-locallayer-root
+        command: exec -c 'echo warmed-up!'
 
 - name: 'Test'
   type: serial
