@@ -24,15 +24,4 @@ export default class User {
 
     @OneToMany(() => Placement, (placement) => placement.user)
     placements: Placement[];
-
-    public static mockTestUser(): User {
-        const user = new User();
-
-        user.email = 'test@email.com';
-        user.name = 'testName';
-        user.availability = 'testAvailability';
-        user.country = 'testCountry';
-
-        return user;
-    }
 }
