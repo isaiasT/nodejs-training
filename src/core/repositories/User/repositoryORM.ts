@@ -31,9 +31,12 @@ class UserORM implements UserRepository {
     updateUser = async (params: UpdateUserParams) => {
         const repositoryORM = getConnection().getRepository(User);
         const user = await repositoryORM.findOne(params.id);
-        repositoryORM.merge(user, _.omit(params, 'id'));
-        const results = await repositoryORM.save(user);
-        return results;
+        if (user) {
+            repositoryORM.merge(user, _.omit(params, 'id'));
+            const results = await repositoryORM.save(user);
+            return { user: results };
+        }
+        return { error: "User doesn't exist" };
     };
 
     deleteUser = async (params: DeleteUserParams) => {
