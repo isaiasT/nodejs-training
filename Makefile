@@ -10,5 +10,5 @@ remove:
 	docker image rm isaiasjt/nodejs-training-backend
 	docker volume prune -f
 
-run-migrations:
-	npm run typeorm migration:run
+migration-run:
+	docker-compose run nodejs-training sh -c 'npm run schema:sync && npm run migration:run'

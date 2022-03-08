@@ -11,3 +11,7 @@
 ## Remove backend image and container, prune unused volumes:
 
     make remove
+
+## Run migrations
+
+    make migration-run

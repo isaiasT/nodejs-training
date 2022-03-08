@@ -1,5 +1,7 @@
 import { TestFactory } from '../../test-utils/factory';
 import User from '../../domain/models/user.model';
+import UserEntity from '../../infra/adapters/entities/user.entity';
+import { UserSeed } from '../../../migration/seeds/user.seed';
 
 describe('Testing user useCases', () => {
     const factory: TestFactory = new TestFactory();
@@ -22,6 +24,7 @@ describe('Testing user useCases', () => {
 
     beforeAll(async () => {
         await factory.init();
+        factory.connection.getRepository<User>(UserEntity).save(UserSeed);
     });
 
     afterAll(async () => {
@@ -69,7 +72,7 @@ describe('Testing user useCases', () => {
 
         it('responds with all users', async () => {
             const response = await factory.app.get('/users');
-            expect(response.body).toHaveLength(1);
+            expect(response.body).toHaveLength(UserSeed.length + 1);
         });
 
         it('responds with status 400 on update user', async () => {
