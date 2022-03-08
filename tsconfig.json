@@ -21,5 +21,5 @@
         "strictNullChecks": false,
         "target": "es6"
     },
-    "include": ["src/**/*", "__tests__/**/*", "testUtils/factory.ts"]
+    "include": ["src/**/*"]
 }

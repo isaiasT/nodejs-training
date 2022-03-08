@@ -1,11 +1,11 @@
 import express, { Response, Request } from 'express';
 import bodyParser from 'body-parser';
 import Rollbar from 'rollbar';
-import userRoutes from './api/User.routes';
-import clientRoutes from './api/Client.routes';
-import jobRequestRoutes from './api/JobRequest.routes';
-import candidacyRoutes from './api/Candidacy.routes';
-import placementRoutes from './api/Placement.routes';
+import userRoutes from './infra/interfaces/routes/user.routes';
+import clientRoutes from './infra/interfaces/routes/client.routes';
+import jobRequestRoutes from './infra/interfaces/routes/jobRequest.routes';
+import candidacyRoutes from './infra/interfaces/routes/candidacy.routes';
+import placementRoutes from './infra/interfaces/routes/placement.routes';
 
 const Server = () => {
     const app = express();
