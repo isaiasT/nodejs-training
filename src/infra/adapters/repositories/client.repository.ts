@@ -37,9 +37,12 @@ const ClientORM = (): ClientRepository => {
             const repositoryORM =
                 getConnection().getRepository<Client>(ClientEntity);
             const client = await repositoryORM.findOne(params.id);
-            repositoryORM.merge(client, _.omit(params, 'id'));
-            const results = await repositoryORM.save(client);
-            return results;
+            if (client) {
+                repositoryORM.merge(client, _.omit(params, 'id'));
+                const results = await repositoryORM.save(client);
+                return { client: results };
+            }
+            return { error: "Client doesn't exist" };
         },
 
         deleteClient: async (params: DeleteClientParams) => {

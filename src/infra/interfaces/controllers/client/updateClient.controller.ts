@@ -7,7 +7,12 @@ const UpdateClientController = async (req: Request, res: Response) => {
         name: req.body.name,
         country: req.body.country,
     });
-    res.json(results);
+
+    if (results.error) {
+        res.status(400).json(results);
+    } else {
+        res.json(results.client);
+    }
 };
 
 export default UpdateClientController;

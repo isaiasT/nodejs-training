@@ -20,10 +20,15 @@ export type DeleteClientParams = {
     id: string;
 };
 
+export type ClientResponse = {
+    client?: Client;
+    error?: string;
+};
+
 export default interface ClientRepository {
     getAllClients(): Promise<Client[]>;
     getClientById(params: GetClientByIdParams): Promise<Client>;
     createClient(params: CreateClientParams): Promise<Client>;
-    updateClient(params: UpdateClientParams): Promise<Client>;
+    updateClient(params: UpdateClientParams): Promise<ClientResponse>;
     deleteClient(params: DeleteClientParams): Promise<DeleteResult>;
 }

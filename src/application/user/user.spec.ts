@@ -1,7 +1,7 @@
 import { TestFactory } from '../../test-utils/factory';
 import User from '../../domain/models/user.model';
 
-describe('Testing user component', () => {
+describe('Testing user useCases', () => {
     const factory: TestFactory = new TestFactory();
 
     const testUser: User = {
@@ -12,11 +12,11 @@ describe('Testing user component', () => {
         id: 'testId',
     };
 
-    const testBadUserModifiedFields = {
+    const testBadModifiedUser = {
         email: 'badEmail',
     };
 
-    const testUserModifiedFields = {
+    const testModifiedUser = {
         name: 'testNameModified',
     };
 
@@ -75,7 +75,7 @@ describe('Testing user component', () => {
         it('responds with status 400 on update user', async () => {
             const response = await factory.app
                 .put(`/users/${testUser.id}`)
-                .send(testBadUserModifiedFields);
+                .send(testBadModifiedUser);
             expect(response.status).toEqual(400);
             expect(response.body.errors).toHaveLength(1);
             expect(
@@ -88,15 +88,15 @@ describe('Testing user component', () => {
         it('responds with modified user', async () => {
             const response = await factory.app
                 .put(`/users/${testUser.id}`)
-                .send(testUserModifiedFields);
+                .send(testModifiedUser);
             const user: User = response.body;
-            expect(user.name).toEqual(testUserModifiedFields.name);
+            expect(user.name).toEqual(testModifiedUser.name);
         });
 
         it('responds with error on update user', async () => {
             const response = await factory.app
                 .put(`/users/badID`)
-                .send(testUserModifiedFields);
+                .send(testModifiedUser);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("User doesn't exist");
         });
