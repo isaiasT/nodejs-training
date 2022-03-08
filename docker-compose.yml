@@ -12,20 +12,19 @@ services:
         volumes:
             - .:/usr/src/nodejs-training
         depends_on:
-            - mariadb
+            - postgres
 
-    mariadb:
-        image: mariadb:latest
-        container_name: mariadb
+    postgres:
+        image: postgres:latest
+        container_name: postgres
         ports:
-            - 3306:3306
+            - 5432:5432
         environment:
-            MYSQL_DATABASE: '${TYPEORM_DATABASE}'
-            MYSQL_USER: '${TYPEORM_USERNAME}'
-            MYSQL_PASSWORD: '${TYPEORM_PASSWORD}'
-            MYSQL_ROOT_PASSWORD: '${TYPEORM_PASSWORD}'
+            POSTGRES_DB: '${TYPEORM_DATABASE}'
+            POSTGRES_USER: '${TYPEORM_USERNAME}'
+            POSTGRES_PASSWORD: '${TYPEORM_PASSWORD}'
         volumes:
-            - mariadb-volume:/var/lib/mysql
+            - postgres-volume:/var/lib/postgresql/data
 
 volumes:
-    mariadb-volume:
+    postgres-volume:
