@@ -11,7 +11,7 @@ import {
     UpdateClientParams,
 } from '../../domain/repositories/client.repository';
 
-const clientRepository = new ClientORM();
+const clientRepository = ClientORM();
 
 export const GetAllClients = () => GetAllClientsUseCase(clientRepository);
 export const GetClientById = (params: GetClientByIdParams) =>

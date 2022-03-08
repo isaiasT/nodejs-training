@@ -11,7 +11,7 @@ import {
     UpdatePlacementParams,
 } from '../../domain/repositories/placement.repository';
 
-const placementRepository = new PlacementORM();
+const placementRepository = PlacementORM();
 
 export const GetAllPlacements = () =>
     GetAllPlacementsUseCase(placementRepository);

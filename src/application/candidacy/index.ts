@@ -11,7 +11,7 @@ import {
     UpdateCandidacyParams,
 } from '../../domain/repositories/candidacy.repository';
 
-const clientRepository = new CandidacyORM();
+const clientRepository = CandidacyORM();
 
 export const GetAllCandidacies = () =>
     GetAllCandidaciesUseCase(clientRepository);

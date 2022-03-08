@@ -11,7 +11,7 @@ import {
     UpdateJobRequestParams,
 } from '../../domain/repositories/jobRequest.repository';
 
-const jobRequestRepository = new JobRequestORM();
+const jobRequestRepository = JobRequestORM();
 
 export const GetAllJobRequests = () =>
     GetAllJobRequestsUseCase(jobRequestRepository);

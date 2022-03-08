@@ -11,7 +11,7 @@ import {
     UpdateUserParams,
 } from '../../domain/repositories/user.repository';
 
-const userRepository = new UserORM();
+const userRepository = UserORM();
 
 export const GetAllUsers = () => GetAllUsersUseCase(userRepository);
 export const GetUserById = (params: GetUserByIdParams) =>
