@@ -1,15 +1,16 @@
-import User from '../../infra/adapters/entities/user.entity';
 import { TestFactory } from '../../test-utils/factory';
-import _ from 'lodash';
+import User from '../../domain/models/user.model';
 
 describe('Testing user component', () => {
     const factory: TestFactory = new TestFactory();
 
-    const testUser = new User();
-    testUser.email = 'test@email.com';
-    testUser.name = 'testName';
-    testUser.availability = 'testAvailability';
-    testUser.country = 'testCountry';
+    const testUser: User = {
+        email: 'test@email.com',
+        name: 'testName',
+        availability: 'testAvailability',
+        country: 'testCountry',
+        id: 'testId',
+    };
 
     const testBadUserModifiedFields = {
         email: 'badEmail',
@@ -62,8 +63,8 @@ describe('Testing user component', () => {
         it('responds with new user', async () => {
             const response = await factory.app.post('/users').send(testUser);
             const user: User = response.body;
-            expect(_.omit(user, 'id')).toEqual(testUser);
             testUser.id = user.id;
+            expect(user).toEqual(testUser);
         });
 
         it('responds with all users', async () => {

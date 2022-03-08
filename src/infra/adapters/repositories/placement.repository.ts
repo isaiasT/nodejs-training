@@ -4,14 +4,16 @@ import PlacementRepository, {
     UpdatePlacementParams,
     DeletePlacementParams,
 } from '../../../domain/repositories/placement.repository';
-import Placement from '../entities/placement.entity';
+import Placement from '../../../domain/models/placement.model';
+import PlacementEntity from '../entities/placement.entity';
 import { getConnection } from 'typeorm';
 import _ from 'lodash';
 
 const PlacementORM = (): PlacementRepository => {
     return {
         getAllPlacements: async () => {
-            const repositoryORM = getConnection().getRepository(Placement);
+            const repositoryORM =
+                getConnection().getRepository<Placement>(PlacementEntity);
             const clients = await repositoryORM.find({
                 relations: ['user', 'client', 'candidacy'],
             });
@@ -19,7 +21,8 @@ const PlacementORM = (): PlacementRepository => {
         },
 
         getPlacementById: async (params: GetPlacementByIdParams) => {
-            const repositoryORM = getConnection().getRepository(Placement);
+            const repositoryORM =
+                getConnection().getRepository<Placement>(PlacementEntity);
             const client = await repositoryORM.findOne(params.id, {
                 relations: ['user', 'client', 'candidacy'],
             });
@@ -27,14 +30,16 @@ const PlacementORM = (): PlacementRepository => {
         },
 
         createPlacement: async (params: CreatePlacementParams) => {
-            const repositoryORM = getConnection().getRepository(Placement);
+            const repositoryORM =
+                getConnection().getRepository<Placement>(PlacementEntity);
             const client = await repositoryORM.create(params);
             const results = await repositoryORM.save(client);
             return results;
         },
 
         updatePlacement: async (params: UpdatePlacementParams) => {
-            const repositoryORM = getConnection().getRepository(Placement);
+            const repositoryORM =
+                getConnection().getRepository<Placement>(PlacementEntity);
             const client = await repositoryORM.findOne(params.id, {
                 relations: ['user', 'client', 'candidacy'],
             });
@@ -44,7 +49,8 @@ const PlacementORM = (): PlacementRepository => {
         },
 
         deletePlacement: async (params: DeletePlacementParams) => {
-            const repositoryORM = getConnection().getRepository(Placement);
+            const repositoryORM =
+                getConnection().getRepository<Placement>(PlacementEntity);
             const results = await repositoryORM.delete(params.id);
             return results;
         },

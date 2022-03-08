@@ -1,21 +1,33 @@
-import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import JobRequest from './jobRequest.entity';
-import Placement from './placement.entity';
+import { EntitySchema } from 'typeorm';
+import Client from '../../../domain/models/client.model';
 
-@Entity()
-export default class Client {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+const ClientEntity = new EntitySchema<Client>({
+    name: 'client',
+    columns: {
+        id: {
+            type: 'uuid',
+            primary: true,
+            generated: 'uuid',
+        },
+        name: {
+            type: String,
+        },
+        country: {
+            type: String,
+        },
+    },
+    relations: {
+        jobRequests: {
+            type: 'one-to-many',
+            target: 'job_request',
+            inverseSide: 'client',
+        },
+        placements: {
+            type: 'one-to-many',
+            target: 'placement',
+            inverseSide: 'client',
+        },
+    },
+});
 
-    @Column()
-    name: string;
-
-    @Column()
-    country: string;
-
-    @OneToMany(() => JobRequest, (jobRequest) => jobRequest.client)
-    jobRequests: JobRequest[];
-
-    @OneToMany(() => Placement, (placement) => placement.client)
-    placements: Placement[];
-}
+export default ClientEntity;

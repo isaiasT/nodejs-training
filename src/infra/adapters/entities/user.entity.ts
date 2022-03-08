@@ -1,27 +1,39 @@
-import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import Candidacy from './candidacy.entity';
-import Placement from './placement.entity';
+import { EntitySchema } from 'typeorm';
+import User from '../../../domain/models/user.model';
 
-@Entity()
-export default class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+const UserEntity = new EntitySchema<User>({
+    name: 'user',
+    columns: {
+        id: {
+            type: 'uuid',
+            primary: true,
+            generated: 'uuid',
+        },
+        name: {
+            type: String,
+        },
+        availability: {
+            type: String,
+        },
+        email: {
+            type: String,
+        },
+        country: {
+            type: String,
+        },
+    },
+    relations: {
+        candidacies: {
+            type: 'one-to-many',
+            target: 'candidacy',
+            inverseSide: 'user',
+        },
+        placements: {
+            type: 'one-to-many',
+            target: 'placement',
+            inverseSide: 'user',
+        },
+    },
+});
 
-    @Column()
-    name: string;
-
-    @Column()
-    availability: string;
-
-    @Column()
-    email: string;
-
-    @Column()
-    country: string;
-
-    @OneToMany(() => Candidacy, (candidacy) => candidacy.user)
-    candidacies: Candidacy[];
-
-    @OneToMany(() => Placement, (placement) => placement.user)
-    placements: Placement[];
-}
+export default UserEntity;

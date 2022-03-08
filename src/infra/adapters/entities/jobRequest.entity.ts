@@ -1,24 +1,30 @@
-import {
-    Entity,
-    Column,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
-import Candidacy from './candidacy.entity';
-import Client from './client.entity';
+import { EntitySchema } from 'typeorm';
+import JobRequest from '../../../domain/models/jobRequest.model';
 
-@Entity()
-export default class JobRequest {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+const JobRequestEntity = new EntitySchema<JobRequest>({
+    name: 'job_request',
+    columns: {
+        id: {
+            type: 'uuid',
+            primary: true,
+            generated: 'uuid',
+        },
+        jobFunction: {
+            type: String,
+        },
+    },
+    relations: {
+        client: {
+            type: 'many-to-one',
+            target: 'client',
+            joinColumn: true,
+        },
+        candidacies: {
+            type: 'one-to-many',
+            target: 'candidacy',
+            inverseSide: 'jobRequest',
+        },
+    },
+});
 
-    @ManyToOne(() => Client, (client) => client.jobRequests)
-    client: Client;
-
-    @Column()
-    jobFunction: string;
-
-    @OneToMany(() => Candidacy, (candidacy) => candidacy.jobRequest)
-    candidacies: Candidacy[];
-}
+export default JobRequestEntity;
