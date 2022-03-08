@@ -1,7 +1,7 @@
 import { TestFactory } from '../../test-utils/factory';
 import User from '../../domain/models/user.model';
 import UserEntity from '../../infra/adapters/entities/user.entity';
-import { UserSeed } from '../../../migration/seeds/user.seed';
+import { UserSeed } from '../../infra/adapters/migrations/seeds/user.seed';
 
 describe('Testing user useCases', () => {
     const factory: TestFactory = new TestFactory();
