@@ -40,12 +40,16 @@ const CandidacyORM = (): CandidacyRepository => {
         updateCandidacy: async (params: UpdateCandidacyParams) => {
             const repositoryORM =
                 getConnection().getRepository<Candidacy>(CandidacyEntity);
-            const client = await repositoryORM.findOne(params.id, {
+            const candidacy = await repositoryORM.findOne(params.id, {
                 relations: ['jobRequest', 'user'],
             });
-            repositoryORM.merge(client, _.omit(params, 'id'));
-            const results = await repositoryORM.save(client);
-            return results;
+
+            if (candidacy) {
+                repositoryORM.merge(candidacy, _.omit(params, 'id'));
+                const results = await repositoryORM.save(candidacy);
+                return { candidacy: results };
+            }
+            return { error: "Candidacy doesn't exist" };
         },
 
         deleteCandidacy: async (params: DeleteCandidacyParams) => {

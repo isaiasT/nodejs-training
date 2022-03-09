@@ -8,7 +8,12 @@ const UpdateCandidacyController = async (req: Request, res: Response) => {
         user: req.body.user,
         status: req.body.status,
     });
-    res.json(results);
+
+    if (results.error) {
+        res.status(400).json(results);
+    } else {
+        res.json(results.candidacy);
+    }
 };
 
 export default UpdateCandidacyController;

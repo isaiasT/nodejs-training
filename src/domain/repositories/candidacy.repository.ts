@@ -8,6 +8,7 @@ export type GetCandidacyByIdParams = {
 };
 
 export type CreateCandidacyParams = {
+    id?: string;
     jobRequest: JobRequest;
     user: User;
     status: string;
@@ -24,10 +25,15 @@ export type DeleteCandidacyParams = {
     id: string;
 };
 
+export type CandidacyResponse = {
+    candidacy?: Candidacy;
+    error?: string;
+};
+
 export default interface CandidacyRepository {
     getAllCandidacies(): Promise<Candidacy[]>;
     getCandidacyById(params: GetCandidacyByIdParams): Promise<Candidacy>;
     createCandidacy(params: CreateCandidacyParams): Promise<Candidacy>;
-    updateCandidacy(params: UpdateCandidacyParams): Promise<Candidacy>;
+    updateCandidacy(params: UpdateCandidacyParams): Promise<CandidacyResponse>;
     deleteCandidacy(params: DeleteCandidacyParams): Promise<DeleteResult>;
 }
