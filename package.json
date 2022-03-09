@@ -8,7 +8,7 @@
         "start": "nodemon ./src/index.ts",
         "clean": "rimraf coverage build tmp",
         "lint": "eslint . --ext .ts,.tsx",
-        "test": "jest --coverage --verbose --runInBand",
+        "test": "jest --coverage --verbose --runInBand && coveralls < coverage/lcov.info",
         "test:watch": "jest --watch",
         "prebuild": "npm run lint",
         "build": "tsc -p tsconfig.release.json",
