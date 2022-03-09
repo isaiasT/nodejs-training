@@ -12,6 +12,6 @@
 
     make remove
 
-## Run migrations
+## Run migrations (requires 'make start')
 
     make migration-run

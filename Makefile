@@ -11,4 +11,4 @@ remove:
 	docker volume prune -f
 
 migration-run:
-	docker-compose run nodejs-training sh -c 'npm run schema:sync && npm run migration:run'
+	docker-compose run --rm nodejs-training sh -c 'npm run migration:run'
