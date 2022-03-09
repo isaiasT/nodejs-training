@@ -7,6 +7,7 @@ export type GetJobRequestByIdParams = {
 };
 
 export type CreateJobRequestParams = {
+    id?: string;
     client: Client;
     jobFunction: string;
 };
@@ -20,10 +21,17 @@ export type DeleteJobRequestParams = {
     id: string;
 };
 
+export type JobRequestResponse = {
+    jobRequest?: JobRequest;
+    error?: string;
+};
+
 export default interface JobRequestRepository {
     getAllJobRequests(): Promise<JobRequest[]>;
     getJobRequestById(params: GetJobRequestByIdParams): Promise<JobRequest>;
     createJobRequest(params: CreateJobRequestParams): Promise<JobRequest>;
-    updateJobRequest(params: UpdateJobRequestParams): Promise<JobRequest>;
+    updateJobRequest(
+        params: UpdateJobRequestParams,
+    ): Promise<JobRequestResponse>;
     deleteJobRequest(params: DeleteJobRequestParams): Promise<DeleteResult>;
 }

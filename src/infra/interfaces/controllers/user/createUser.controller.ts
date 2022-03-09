@@ -20,6 +20,7 @@ const CreateUserController = async (req: Request, res: Response) => {
         validationResult(req).throw();
 
         const results = await CreateUser({
+            id: req.body.id,
             name: req.body.name,
             availability: req.body.availability,
             email: req.body.email,

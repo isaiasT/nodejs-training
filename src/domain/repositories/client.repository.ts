@@ -6,6 +6,7 @@ export type GetClientByIdParams = {
 };
 
 export type CreateClientParams = {
+    id?: string;
     name: string;
     country: string;
 };

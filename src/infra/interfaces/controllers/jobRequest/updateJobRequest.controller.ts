@@ -6,7 +6,12 @@ const UpdateJobRequestController = async (req: Request, res: Response) => {
         id: req.params.id,
         jobFunction: req.body.jobFunction,
     });
-    res.json(results);
+
+    if (results.error) {
+        res.status(400).json(results);
+    } else {
+        res.json(results.jobRequest);
+    }
 };
 
 export default UpdateJobRequestController;

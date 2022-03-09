@@ -11,7 +11,7 @@ describe('Testing user useCases', () => {
         name: 'testName',
         availability: 'testAvailability',
         country: 'testCountry',
-        id: 'testId',
+        id: '9b343054-c14a-400e-a299-d7f182e9c60a',
     };
 
     const testBadModifiedUser = {
@@ -24,7 +24,7 @@ describe('Testing user useCases', () => {
 
     beforeAll(async () => {
         await factory.init();
-        factory.connection.getRepository<User>(UserEntity).save(UserSeed);
+        await factory.connection.getRepository<User>(UserEntity).save(UserSeed);
     });
 
     afterAll(async () => {
@@ -66,7 +66,6 @@ describe('Testing user useCases', () => {
         it('responds with new user', async () => {
             const response = await factory.app.post('/users').send(testUser);
             const user: User = response.body;
-            testUser.id = user.id;
             expect(user).toEqual(testUser);
         });
 

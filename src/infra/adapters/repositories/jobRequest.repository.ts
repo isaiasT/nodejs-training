@@ -43,9 +43,13 @@ const JobRequestORM = (): JobRequestRepository => {
             const jobRequest = await repositoryORM.findOne(params.id, {
                 relations: ['client'],
             });
-            repositoryORM.merge(jobRequest, _.omit(params, 'id'));
-            const results = await repositoryORM.save(jobRequest);
-            return results;
+
+            if (jobRequest) {
+                repositoryORM.merge(jobRequest, _.omit(params, 'id'));
+                const results = await repositoryORM.save(jobRequest);
+                return { jobRequest: results };
+            }
+            return { error: "JobRequest doesn't exist" };
         },
 
         deleteJobRequest: async (params: DeleteJobRequestParams) => {

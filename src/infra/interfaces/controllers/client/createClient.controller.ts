@@ -19,6 +19,7 @@ const CreateClientController = async (req: Request, res: Response) => {
         validationResult(req).throw();
 
         const results = await CreateClient({
+            id: req.body.id,
             name: req.body.name,
             country: req.body.country,
         });

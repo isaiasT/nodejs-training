@@ -1,5 +1,7 @@
 import { TestFactory } from '../../test-utils/factory';
 import Client from '../../domain/models/client.model';
+import ClientEntity from '../../infra/adapters/entities/client.entity';
+import { ClientSeed } from '../../infra/adapters/migrations/seeds/client.seed';
 
 describe('Testing client useCases', () => {
     const factory: TestFactory = new TestFactory();
@@ -7,7 +9,7 @@ describe('Testing client useCases', () => {
     const testClient: Client = {
         name: 'testName',
         country: 'testCountry',
-        id: 'testId',
+        id: '176232b9-4179-4e78-9fea-a4804d9725b5',
     };
 
     const testModifiedClient = {
@@ -16,6 +18,9 @@ describe('Testing client useCases', () => {
 
     beforeAll(async () => {
         await factory.init();
+        await factory.connection
+            .getRepository<Client>(ClientEntity)
+            .save(ClientSeed);
     });
 
     afterAll(async () => {
@@ -44,13 +49,12 @@ describe('Testing client useCases', () => {
                 .post('/clients')
                 .send(testClient);
             const client: Client = response.body;
-            testClient.id = client.id;
             expect(client).toEqual(testClient);
         });
 
         it('responds with all clients', async () => {
             const response = await factory.app.get('/clients');
-            expect(response.body).toHaveLength(1);
+            expect(response.body).toHaveLength(ClientSeed.length + 1);
         });
 
         it('responds with modified client', async () => {

@@ -7,5 +7,5 @@ module.exports = {
     testMatch: ['**/?(*.)+(spec).ts'],
     coverageDirectory: 'coverage',
     collectCoverageFrom: ['src/**/*.{ts,tsx,js,jsx}', '!src/**/*.d.ts'],
-    modulePathIgnorePatterns: ['src/index.ts'],
+    modulePathIgnorePatterns: ['src/index.ts', 'src/infra/adapters/migrations'],
 };

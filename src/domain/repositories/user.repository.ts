@@ -6,6 +6,7 @@ export type GetUserByIdParams = {
 };
 
 export type CreateUserParams = {
+    id?: string;
     name: string;
     availability: string;
     email: string;
