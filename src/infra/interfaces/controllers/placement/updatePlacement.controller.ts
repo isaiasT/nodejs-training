@@ -8,7 +8,12 @@ const UpdatePlacementController = async (req: Request, res: Response) => {
         client: req.body.client,
         candidacy: req.body.candidacy,
     });
-    res.json(results);
+
+    if (results.error) {
+        res.status(400).json(results);
+    } else {
+        res.json(results.placement);
+    }
 };
 
 export default UpdatePlacementController;

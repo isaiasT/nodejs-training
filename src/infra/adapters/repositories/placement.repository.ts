@@ -40,12 +40,16 @@ const PlacementORM = (): PlacementRepository => {
         updatePlacement: async (params: UpdatePlacementParams) => {
             const repositoryORM =
                 getConnection().getRepository<Placement>(PlacementEntity);
-            const client = await repositoryORM.findOne(params.id, {
+            const placement = await repositoryORM.findOne(params.id, {
                 relations: ['user', 'client', 'candidacy'],
             });
-            repositoryORM.merge(client, _.omit(params, 'id'));
-            const results = await repositoryORM.save(client);
-            return results;
+
+            if (placement) {
+                repositoryORM.merge(placement, _.omit(params, 'id'));
+                const results = await repositoryORM.save(placement);
+                return { placement: results };
+            }
+            return { error: "Placement doesn't exist" };
         },
 
         deletePlacement: async (params: DeletePlacementParams) => {

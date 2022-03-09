@@ -9,6 +9,7 @@ export type GetPlacementByIdParams = {
 };
 
 export type CreatePlacementParams = {
+    id?: string;
     user: User;
     client: Client;
     candidacy: Candidacy;
@@ -25,10 +26,15 @@ export type DeletePlacementParams = {
     id: string;
 };
 
+export type PlacementResponse = {
+    placement?: Placement;
+    error?: string;
+};
+
 export default interface PlacementRepository {
     getAllPlacements(): Promise<Placement[]>;
     getPlacementById(params: GetPlacementByIdParams): Promise<Placement>;
     createPlacement(params: CreatePlacementParams): Promise<Placement>;
-    updatePlacement(params: UpdatePlacementParams): Promise<Placement>;
+    updatePlacement(params: UpdatePlacementParams): Promise<PlacementResponse>;
     deletePlacement(params: DeletePlacementParams): Promise<DeleteResult>;
 }

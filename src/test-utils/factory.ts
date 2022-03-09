@@ -29,10 +29,6 @@ export class TestFactory {
         return this._connection;
     }
 
-    public get server(): HttpServer {
-        return this._server;
-    }
-
     public async init(): Promise<void> {
         this._connection = await createConnection(this.options);
         this._app = Server();
