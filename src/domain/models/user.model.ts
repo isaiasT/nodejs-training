@@ -7,6 +7,7 @@ export default interface User {
     availability: string;
     email: string;
     country: string;
+    password: string;
     candidacies?: Candidacy[];
     placements?: Placement[];
 }

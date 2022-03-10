@@ -11,6 +11,8 @@ describe('Testing user useCases', () => {
         name: 'testName',
         availability: 'testAvailability',
         country: 'testCountry',
+        password:
+            '$2a$10$nq9tyBsbbLtzQZgT8YICtubjEvPmMrwK64io/V8NdSKzVlLNSS.P.', //Devandtalent1-
         id: '9b343054-c14a-400e-a299-d7f182e9c60a',
     };
 
@@ -35,7 +37,7 @@ describe('Testing user useCases', () => {
         it('responds with status 400 on create new user', async () => {
             const response = await factory.app.post('/users').send();
             expect(response.status).toEqual(400);
-            expect(response.body.errors).toHaveLength(5);
+            expect(response.body.errors).toHaveLength(7);
             expect(
                 response.body.errors.find(
                     (error) => error.msg === `Field 'name' is required`,
@@ -54,6 +56,16 @@ describe('Testing user useCases', () => {
             expect(
                 response.body.errors.find(
                     (error) => error.msg === `Field 'email' is required`,
+                ).msg,
+            ).toBeTruthy();
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === `Field 'password' is required`,
+                ).msg,
+            ).toBeTruthy();
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === `Please enter a strong password`,
                 ).msg,
             ).toBeTruthy();
             expect(

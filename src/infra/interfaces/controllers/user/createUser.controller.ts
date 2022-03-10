@@ -1,10 +1,16 @@
 import { CreateUser } from '../../../../application/user';
 import { Response, Request } from 'express';
-import { validationResult } from 'express-validator';
+import { check, validationResult } from 'express-validator';
 import { body } from 'express-validator';
 import checkRequired from '../../../../utils/checkRequired';
 
-const requiredBodyFields = ['name', 'availability', 'email', 'country'];
+const requiredBodyFields = [
+    'name',
+    'availability',
+    'email',
+    'country',
+    'password',
+];
 
 const CreateUserValidators = [
     ...requiredBodyFields.map((field) => {
@@ -13,6 +19,7 @@ const CreateUserValidators = [
         });
     }),
     body('email', 'Invalid email').isEmail(),
+    check('password', 'Please enter a strong password').isStrongPassword(),
 ];
 
 const CreateUserController = async (req: Request, res: Response) => {
@@ -25,6 +32,7 @@ const CreateUserController = async (req: Request, res: Response) => {
             availability: req.body.availability,
             email: req.body.email,
             country: req.body.country,
+            password: req.body.password,
         });
         res.json(results);
     } catch (err) {

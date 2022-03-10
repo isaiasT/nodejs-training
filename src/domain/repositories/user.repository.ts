@@ -11,6 +11,7 @@ export type CreateUserParams = {
     availability: string;
     email: string;
     country: string;
+    password: string;
 };
 
 export type UpdateUserParams = {
@@ -19,6 +20,7 @@ export type UpdateUserParams = {
     availability?: string;
     email?: string;
     country?: string;
+    password?: string;
 };
 
 export type DeleteUserParams = {

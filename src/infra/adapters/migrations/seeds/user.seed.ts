@@ -15,6 +15,10 @@ const UserSeed = [];
 
 const total = 5;
 
+// Devandtalent1-
+const encryptedPassword =
+    '$2a$10$nq9tyBsbbLtzQZgT8YICtubjEvPmMrwK64io/V8NdSKzVlLNSS.P.';
+
 for (let index = 0; index < total; index++) {
     UserSeed.push({
         id: UserIds[index],
@@ -22,6 +26,7 @@ for (let index = 0; index < total; index++) {
         name: `${chance.first()} ${chance.last()}`,
         availability: chance.pickone(['weekdays', 'weekend']),
         country: chance.pickone(['Spain', 'Portugal', 'US', 'UK']),
+        password: encryptedPassword,
     });
 }
 

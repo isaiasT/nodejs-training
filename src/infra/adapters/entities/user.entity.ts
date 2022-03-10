@@ -21,6 +21,9 @@ const UserEntity = new EntitySchema<User>({
         country: {
             type: String,
         },
+        password: {
+            type: String,
+        },
     },
     relations: {
         candidacies: {
