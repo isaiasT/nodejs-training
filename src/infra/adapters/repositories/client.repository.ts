@@ -1,6 +1,6 @@
 import ClientRepository, {
     GetClientByIdParams,
-    CreateClientParams,
+    RegisterClientParams,
     UpdateClientParams,
     DeleteClientParams,
 } from '../../../domain/repositories/client.repository';
@@ -25,12 +25,12 @@ const ClientORM = (): ClientRepository => {
             return client;
         },
 
-        createClient: async (params: CreateClientParams) => {
+        registerClient: async (params: RegisterClientParams) => {
             const repositoryORM =
                 getConnection().getRepository<Client>(ClientEntity);
             const client = await repositoryORM.create(params);
             const results = await repositoryORM.save(client);
-            return results;
+            return _.omit(results, 'password');
         },
 
         updateClient: async (params: UpdateClientParams) => {

@@ -14,11 +14,17 @@ const ClientSeed = [];
 
 const total = 5;
 
+// Devandtalent1-
+const encryptedPassword =
+    '$2a$10$nq9tyBsbbLtzQZgT8YICtubjEvPmMrwK64io/V8NdSKzVlLNSS.P.';
+
 for (let index = 0; index < total; index++) {
     ClientSeed.push({
         id: ClientIds[index],
         name: chance.company(),
         country: chance.pickone(['Spain', 'Portugal', 'US', 'UK']),
+        email: chance.email(),
+        password: encryptedPassword,
     });
 }
 

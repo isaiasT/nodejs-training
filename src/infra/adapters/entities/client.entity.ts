@@ -15,6 +15,12 @@ const ClientEntity = new EntitySchema<Client>({
         country: {
             type: String,
         },
+        email: {
+            type: String,
+        },
+        password: {
+            type: String,
+        },
     },
     relations: {
         jobRequests: {

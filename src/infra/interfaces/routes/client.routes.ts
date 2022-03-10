@@ -2,18 +2,37 @@ import express, { Router } from 'express';
 import getAllClientsController from '../controllers/client/getAllClients.controller';
 import getClientByIdController from '../controllers/client/getClientById.controller';
 import {
-    CreateClientController,
-    CreateClientValidators,
-} from '../controllers/client/createClient.controller';
-import updateClientController from '../controllers/client/updateClient.controller';
+    RegisterClientController,
+    RegisterClientValidators,
+} from '../controllers/client/registerClient.controller';
+import {
+    UpdateClientController,
+    UpdateClientValidators,
+} from '../controllers/client/updateClient.controller';
 import deleteClientController from '../controllers/client/deleteClient.controller';
+import {
+    LoginClientController,
+    LoginClientValidators,
+} from '../controllers/client/loginClient.controller';
+import { checkJwt } from '../middlewares/checkJwt';
+import { checkRole } from '../middlewares/checkRole';
+import Role from '../../../domain/models/role.model';
 
 const router: Router = express.Router();
 
-router.get('/clients', getAllClientsController);
+router.get(
+    '/clients',
+    [checkJwt, checkRole([Role.User])],
+    getAllClientsController,
+);
 router.get('/clients/:id', getClientByIdController);
-router.post('/clients', CreateClientValidators, CreateClientController);
-router.put('/clients/:id', updateClientController);
+router.post(
+    '/clients/register',
+    RegisterClientValidators,
+    RegisterClientController,
+);
+router.post('/clients/login', LoginClientValidators, LoginClientController);
+router.put('/clients/:id', UpdateClientValidators, UpdateClientController);
 router.delete('/clients/:id', deleteClientController);
 
 export default router;

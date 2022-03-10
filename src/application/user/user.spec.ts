@@ -2,6 +2,9 @@ import { TestFactory } from '../../test-utils/factory';
 import User from '../../domain/models/user.model';
 import UserEntity from '../../infra/adapters/entities/user.entity';
 import { UserSeed } from '../../infra/adapters/migrations/seeds/user.seed';
+import ClientEntity from '../../infra/adapters/entities/client.entity';
+import { ClientSeed } from '../../infra/adapters/migrations/seeds/client.seed';
+import Client from '../../domain/models/client.model';
 
 describe('Testing user useCases', () => {
     const factory: TestFactory = new TestFactory();
@@ -33,10 +36,13 @@ describe('Testing user useCases', () => {
         name: 'testNameModified',
     };
 
-    let userToken;
+    let userToken: string;
 
     beforeAll(async () => {
         await factory.init();
+        await factory.connection
+            .getRepository<Client>(ClientEntity)
+            .save(ClientSeed);
         await factory.connection.getRepository<User>(UserEntity).save(UserSeed);
         process.env.TOKEN_SECRET = 'testTokenSecret';
     });
@@ -155,7 +161,6 @@ describe('Testing user useCases', () => {
         it('responds with invalid token error', async () => {
             const response = await factory.app.get('/users');
             expect(response.status).toEqual(401);
-            console.log(response.body);
             expect(response.body.errors).toHaveLength(1);
             expect(
                 response.body.errors.find(
@@ -164,11 +169,24 @@ describe('Testing user useCases', () => {
             ).toBeTruthy();
         });
 
-        it('responds with all users', async () => {
+        it('responds with all clients', async () => {
+            const response = await factory.app
+                .get('/clients')
+                .set('Authorization', 'Bearer ' + userToken);
+            expect(response.body).toHaveLength(ClientSeed.length);
+        });
+
+        it('responds with status 401 on getting all users', async () => {
             const response = await factory.app
                 .get('/users')
                 .set('Authorization', 'Bearer ' + userToken);
-            expect(response.body).toHaveLength(UserSeed.length + 1);
+            expect(response.status).toEqual(401);
+            expect(response.body.errors).toHaveLength(1);
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === 'Unauthorized',
+                ).msg,
+            ).toBeTruthy();
         });
 
         it('responds with status 400 on update user', async () => {
