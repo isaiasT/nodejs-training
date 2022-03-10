@@ -33,6 +33,8 @@ describe('Testing user useCases', () => {
         name: 'testNameModified',
     };
 
+    let userToken;
+
     beforeAll(async () => {
         await factory.init();
         await factory.connection.getRepository<User>(UserEntity).save(UserSeed);
@@ -111,6 +113,7 @@ describe('Testing user useCases', () => {
                 .post('/users/login')
                 .send(testLoginUser);
             const user = response.body;
+            userToken = user.token;
             expect(user.email).toEqual(testUser.email);
             expect(user.token).toBeTruthy();
         });
@@ -149,8 +152,22 @@ describe('Testing user useCases', () => {
             ).toBeTruthy();
         });
 
-        it('responds with all users', async () => {
+        it('responds with invalid token error', async () => {
             const response = await factory.app.get('/users');
+            expect(response.status).toEqual(401);
+            console.log(response.body);
+            expect(response.body.errors).toHaveLength(1);
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === 'Invalid token',
+                ).msg,
+            ).toBeTruthy();
+        });
+
+        it('responds with all users', async () => {
+            const response = await factory.app
+                .get('/users')
+                .set('Authorization', 'Bearer ' + userToken);
             expect(response.body).toHaveLength(UserSeed.length + 1);
         });
 

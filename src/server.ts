@@ -6,10 +6,14 @@ import clientRoutes from './infra/interfaces/routes/client.routes';
 import jobRequestRoutes from './infra/interfaces/routes/jobRequest.routes';
 import candidacyRoutes from './infra/interfaces/routes/candidacy.routes';
 import placementRoutes from './infra/interfaces/routes/placement.routes';
+import cors from 'cors';
+import helmet from 'helmet';
 
 const Server = () => {
     const app = express();
 
+    app.use(cors());
+    app.use(helmet());
     app.use(bodyParser.json());
 
     const rollbar = new Rollbar({

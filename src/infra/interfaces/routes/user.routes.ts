@@ -14,10 +14,11 @@ import {
     UpdateUserValidators,
 } from '../controllers/user/updateUser.controller';
 import deleteUserController from '../controllers/user/deleteUser.controller';
+import { checkJwt } from '../middlewares/checkJwt';
 
 const router: Router = express.Router();
 
-router.get('/users', getAllUsersController);
+router.get('/users', [checkJwt], getAllUsersController);
 router.get('/users/:id', getUserByIdController);
 router.post('/users/register', RegisterUserValidators, RegisterUserController);
 router.post('/users/login', LoginUserValidators, LoginUserController);
