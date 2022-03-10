@@ -115,7 +115,28 @@ describe('Testing user useCases', () => {
             expect(user.token).toBeTruthy();
         });
 
-        it('responds with status 400 after login', async () => {
+        it('responds with status 400 after login, required fields', async () => {
+            const response = await factory.app.post('/users/login').send();
+            expect(response.status).toEqual(400);
+            expect(response.body.errors).toHaveLength(3);
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === `Field 'email' is required`,
+                ).msg,
+            ).toBeTruthy();
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === `Field 'password' is required`,
+                ).msg,
+            ).toBeTruthy();
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === 'Invalid email',
+                ).msg,
+            ).toBeTruthy();
+        });
+
+        it('responds with status 400 after login, wrong credentials', async () => {
             const response = await factory.app
                 .post('/users/login')
                 .send(testBadLoginUser);
