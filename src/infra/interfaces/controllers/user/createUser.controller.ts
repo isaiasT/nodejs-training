@@ -3,6 +3,9 @@ import { Response, Request } from 'express';
 import { check, validationResult } from 'express-validator';
 import { body } from 'express-validator';
 import checkRequired from '../../../../utils/checkRequired';
+import { getConnection } from 'typeorm';
+import User from '../../../../domain/models/user.model';
+import UserEntity from '../../../adapters/entities/user.entity';
 
 const requiredBodyFields = [
     'name',
@@ -26,15 +29,25 @@ const CreateUserController = async (req: Request, res: Response) => {
     try {
         validationResult(req).throw();
 
-        const results = await CreateUser({
-            id: req.body.id,
-            name: req.body.name,
-            availability: req.body.availability,
-            email: req.body.email,
-            country: req.body.country,
-            password: req.body.password,
-        });
-        res.json(results);
+        const repositoryORM = getConnection().getRepository<User>(UserEntity);
+        const user = await repositoryORM
+            .createQueryBuilder('user')
+            .where('user.email = :email', { email: req.body.email })
+            .getOne();
+
+        if (user) {
+            res.status(400).json({ errors: [{ msg: 'User already exists' }] });
+        } else {
+            const results = await CreateUser({
+                id: req.body.id,
+                name: req.body.name,
+                availability: req.body.availability,
+                email: req.body.email,
+                country: req.body.country,
+                password: req.body.password,
+            });
+            res.json(results);
+        }
     } catch (err) {
         res.status(400).json(err);
     }

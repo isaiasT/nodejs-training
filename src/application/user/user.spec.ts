@@ -81,6 +81,17 @@ describe('Testing user useCases', () => {
             expect(user).toEqual(testUser);
         });
 
+        it('responds with status 400 on create user with same email', async () => {
+            const response = await factory.app.post('/users').send(testUser);
+            expect(response.status).toEqual(400);
+            expect(response.body.errors).toHaveLength(1);
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === 'User already exists',
+                ).msg,
+            ).toBeTruthy();
+        });
+
         it('responds with all users', async () => {
             const response = await factory.app.get('/users');
             expect(response.body).toHaveLength(UserSeed.length + 1);
