@@ -11,9 +11,18 @@ describe('Testing user useCases', () => {
         name: 'testName',
         availability: 'testAvailability',
         country: 'testCountry',
-        password:
-            '$2a$10$nq9tyBsbbLtzQZgT8YICtubjEvPmMrwK64io/V8NdSKzVlLNSS.P.', //Devandtalent1-
+        password: 'Devandtalent1-',
         id: '9b343054-c14a-400e-a299-d7f182e9c60a',
+    };
+
+    const testLoginUser = {
+        email: 'test@email.com',
+        password: 'Devandtalent1-',
+    };
+
+    const testBadLoginUser = {
+        email: 'test@email.com',
+        password: 'testBadPassword',
     };
 
     const testBadModifiedUser = {
@@ -93,6 +102,28 @@ describe('Testing user useCases', () => {
             expect(
                 response.body.errors.find(
                     (error) => error.msg === 'User already exists',
+                ).msg,
+            ).toBeTruthy();
+        });
+
+        it('responds with logged user and token', async () => {
+            const response = await factory.app
+                .post('/users/login')
+                .send(testLoginUser);
+            const user = response.body;
+            expect(user.email).toEqual(testUser.email);
+            expect(user.token).toBeTruthy();
+        });
+
+        it('responds with status 400 after login', async () => {
+            const response = await factory.app
+                .post('/users/login')
+                .send(testBadLoginUser);
+            expect(response.status).toEqual(400);
+            expect(response.body.errors).toHaveLength(1);
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === 'Invalid credentials',
                 ).msg,
             ).toBeTruthy();
         });

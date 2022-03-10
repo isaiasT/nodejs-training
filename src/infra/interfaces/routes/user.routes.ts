@@ -6,6 +6,10 @@ import {
     RegisterUserController,
 } from '../controllers/user/registerUser.controller';
 import {
+    LoginUserValidators,
+    LoginUserController,
+} from '../controllers/user/loginUser.controller';
+import {
     UpdateUserController,
     UpdateUserValidators,
 } from '../controllers/user/updateUser.controller';
@@ -16,6 +20,7 @@ const router: Router = express.Router();
 router.get('/users', getAllUsersController);
 router.get('/users/:id', getUserByIdController);
 router.post('/users/register', RegisterUserValidators, RegisterUserController);
+router.post('/users/login', LoginUserValidators, LoginUserController);
 router.put('/users/:id', UpdateUserValidators, UpdateUserController);
 router.delete('/users/:id', deleteUserController);
 
