@@ -5,13 +5,21 @@ export type GetUserByIdParams = {
     id: string;
 };
 
-export type CreateUserParams = {
+export type RegisterUserParams = {
     id?: string;
     name: string;
     availability: string;
     email: string;
     country: string;
     password: string;
+};
+
+export type RegisterUserResponse = {
+    id: string;
+    name: string;
+    availability: string;
+    email: string;
+    country: string;
 };
 
 export type UpdateUserParams = {
@@ -35,7 +43,7 @@ export type UserResponse = {
 export default interface UserRepository {
     getAllUsers(): Promise<User[]>;
     getUserById(params: GetUserByIdParams): Promise<User>;
-    createUser(params: CreateUserParams): Promise<User>;
+    registerUser(params: RegisterUserParams): Promise<RegisterUserResponse>;
     updateUser(params: UpdateUserParams): Promise<UserResponse>;
     deleteUser(params: DeleteUserParams): Promise<DeleteResult>;
 }

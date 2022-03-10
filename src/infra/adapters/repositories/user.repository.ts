@@ -1,6 +1,6 @@
 import UserRepository, {
     GetUserByIdParams,
-    CreateUserParams,
+    RegisterUserParams,
     UpdateUserParams,
     DeleteUserParams,
 } from '../../../domain/repositories/user.repository';
@@ -25,12 +25,12 @@ const UserORM = (): UserRepository => {
             return user;
         },
 
-        createUser: async (params: CreateUserParams) => {
+        registerUser: async (params: RegisterUserParams) => {
             const repositoryORM =
                 getConnection().getRepository<User>(UserEntity);
             const user = await repositoryORM.create(params);
             const results = await repositoryORM.save(user);
-            return results;
+            return _.omit(results, 'password');
         },
 
         updateUser: async (params: UpdateUserParams) => {

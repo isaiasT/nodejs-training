@@ -2,9 +2,9 @@ import express, { Router } from 'express';
 import getAllUsersController from '../controllers/user/getAllUsers.controller';
 import getUserByIdController from '../controllers/user/getUserById.controller';
 import {
-    CreateUserValidators,
-    CreateUserController,
-} from '../controllers/user/createUser.controller';
+    RegisterUserValidators,
+    RegisterUserController,
+} from '../controllers/user/registerUser.controller';
 import {
     UpdateUserController,
     UpdateUserValidators,
@@ -15,7 +15,7 @@ const router: Router = express.Router();
 
 router.get('/users', getAllUsersController);
 router.get('/users/:id', getUserByIdController);
-router.post('/users', CreateUserValidators, CreateUserController);
+router.post('/users/register', RegisterUserValidators, RegisterUserController);
 router.put('/users/:id', UpdateUserValidators, UpdateUserController);
 router.delete('/users/:id', deleteUserController);
 

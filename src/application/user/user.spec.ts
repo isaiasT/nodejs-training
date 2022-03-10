@@ -27,6 +27,7 @@ describe('Testing user useCases', () => {
     beforeAll(async () => {
         await factory.init();
         await factory.connection.getRepository<User>(UserEntity).save(UserSeed);
+        process.env.TOKEN_SECRET = 'testTokenSecret';
     });
 
     afterAll(async () => {
@@ -35,7 +36,7 @@ describe('Testing user useCases', () => {
 
     describe('POST /users', () => {
         it('responds with status 400 on create new user', async () => {
-            const response = await factory.app.post('/users').send();
+            const response = await factory.app.post('/users/register').send();
             expect(response.status).toEqual(400);
             expect(response.body.errors).toHaveLength(7);
             expect(
@@ -76,13 +77,17 @@ describe('Testing user useCases', () => {
         });
 
         it('responds with new user', async () => {
-            const response = await factory.app.post('/users').send(testUser);
+            const response = await factory.app
+                .post('/users/register')
+                .send(testUser);
             const user: User = response.body;
-            expect(user).toEqual(testUser);
+            expect(user.email).toEqual(testUser.email);
         });
 
         it('responds with status 400 on create user with same email', async () => {
-            const response = await factory.app.post('/users').send(testUser);
+            const response = await factory.app
+                .post('/users/register')
+                .send(testUser);
             expect(response.status).toEqual(400);
             expect(response.body.errors).toHaveLength(1);
             expect(
