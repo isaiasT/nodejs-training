@@ -170,19 +170,6 @@ describe('Testing client useCases', () => {
             expect(response.body).toHaveLength(UserSeed.length);
         });
 
-        it('responds with status 401 on getting all clients', async () => {
-            const response = await factory.app
-                .get('/clients')
-                .set('Authorization', 'Bearer ' + clientToken);
-            expect(response.status).toEqual(401);
-            expect(response.body.errors).toHaveLength(1);
-            expect(
-                response.body.errors.find(
-                    (error) => error.msg === 'Unauthorized',
-                ).msg,
-            ).toBeTruthy();
-        });
-
         it('responds with status 400 on update client', async () => {
             const response = await factory.app
                 .put(`/clients/${testClient.id}`)
@@ -228,6 +215,19 @@ describe('Testing client useCases', () => {
                 `/clients/${testClient.id}`,
             );
             expect(response.body.affected).toEqual(1);
+        });
+
+        it('responds with status 401 on creating candidacy', async () => {
+            const response = await factory.app
+                .post('/candidacies')
+                .set('Authorization', 'Bearer ' + clientToken);
+            expect(response.status).toEqual(401);
+            expect(response.body.errors).toHaveLength(1);
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === 'Unauthorized',
+                ).msg,
+            ).toBeTruthy();
         });
     });
 });

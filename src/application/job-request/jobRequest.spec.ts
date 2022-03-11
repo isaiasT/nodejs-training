@@ -19,6 +19,21 @@ describe('Testing jobRequest useCases', () => {
         jobFunction: 'testJobFunctionModified',
     };
 
+    const testClient: Client = {
+        name: 'testName',
+        country: 'testCountry',
+        email: 'test@email.com',
+        password: 'Devandtalent1-',
+        id: '176232b9-4179-4e78-9fea-a4804d9725b5',
+    };
+
+    const loginClient = {
+        email: 'test@email.com',
+        password: 'Devandtalent1-',
+    };
+
+    let clientToken: string;
+
     beforeAll(async () => {
         await factory.init();
         await factory.connection
@@ -27,6 +42,13 @@ describe('Testing jobRequest useCases', () => {
         await factory.connection
             .getRepository<JobRequest>(JobRequestEntity)
             .save(JobRequestSeed);
+        process.env.TOKEN_SECRET = 'testTokenSecret';
+        await factory.app.post('/clients/register').send(testClient);
+        const response = await factory.app
+            .post('/clients/login')
+            .send(loginClient);
+        const client = response.body;
+        clientToken = client.token;
     });
 
     afterAll(async () => {
@@ -35,7 +57,10 @@ describe('Testing jobRequest useCases', () => {
 
     describe('POST /jobrequests', () => {
         it('responds with status 400 on create new jobRequest', async () => {
-            const response = await factory.app.post('/jobrequests').send();
+            const response = await factory.app
+                .post('/jobrequests')
+                .set('Authorization', 'Bearer ' + clientToken)
+                .send();
             expect(response.status).toEqual(400);
             expect(response.body.errors).toHaveLength(2);
             expect(
@@ -53,6 +78,7 @@ describe('Testing jobRequest useCases', () => {
         it('responds with new jobRequest', async () => {
             const response = await factory.app
                 .post('/jobrequests')
+                .set('Authorization', 'Bearer ' + clientToken)
                 .send(testJobRequest);
             const jobRequest: JobRequest = response.body;
             expect(jobRequest).toEqual(testJobRequest);

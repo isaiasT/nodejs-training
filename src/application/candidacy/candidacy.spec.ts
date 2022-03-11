@@ -26,6 +26,22 @@ describe('Testing jobRequest useCases', () => {
         status: 'testStatusModified',
     };
 
+    const testUser: User = {
+        email: 'test@email.com',
+        name: 'testName',
+        availability: 'testAvailability',
+        country: 'testCountry',
+        password: 'Devandtalent1-',
+        id: '9b343054-c14a-400e-a299-d7f182e9c60a',
+    };
+
+    const testLoginUser = {
+        email: 'test@email.com',
+        password: 'Devandtalent1-',
+    };
+
+    let userToken: string;
+
     beforeAll(async () => {
         await factory.init();
         await factory.connection.getRepository<User>(UserEntity).save(UserSeed);
@@ -38,6 +54,13 @@ describe('Testing jobRequest useCases', () => {
         await factory.connection
             .getRepository<Candidacy>(CandidacyEntity)
             .save(CandidacySeed);
+        process.env.TOKEN_SECRET = 'testTokenSecret';
+        await factory.app.post('/users/register').send(testUser);
+        const response = await factory.app
+            .post('/users/login')
+            .send(testLoginUser);
+        const user = response.body;
+        userToken = user.token;
     });
 
     afterAll(async () => {
@@ -46,7 +69,10 @@ describe('Testing jobRequest useCases', () => {
 
     describe('POST /candidacies', () => {
         it('responds with status 400 on create new candidacy', async () => {
-            const response = await factory.app.post('/candidacies').send();
+            const response = await factory.app
+                .post('/candidacies')
+                .set('Authorization', 'Bearer ' + userToken)
+                .send();
             expect(response.status).toEqual(400);
             expect(response.body.errors).toHaveLength(3);
             expect(
@@ -69,6 +95,7 @@ describe('Testing jobRequest useCases', () => {
         it('responds with new candidacy', async () => {
             const response = await factory.app
                 .post('/candidacies')
+                .set('Authorization', 'Bearer ' + userToken)
                 .send(testCandidacy);
             const candidacy: Candidacy = response.body;
             expect(candidacy).toEqual(testCandidacy);

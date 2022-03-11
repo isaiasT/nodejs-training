@@ -176,19 +176,6 @@ describe('Testing user useCases', () => {
             expect(response.body).toHaveLength(ClientSeed.length);
         });
 
-        it('responds with status 401 on getting all users', async () => {
-            const response = await factory.app
-                .get('/users')
-                .set('Authorization', 'Bearer ' + userToken);
-            expect(response.status).toEqual(401);
-            expect(response.body.errors).toHaveLength(1);
-            expect(
-                response.body.errors.find(
-                    (error) => error.msg === 'Unauthorized',
-                ).msg,
-            ).toBeTruthy();
-        });
-
         it('responds with status 400 on update user', async () => {
             const response = await factory.app
                 .put(`/users/${testUser.id}`)
@@ -232,6 +219,19 @@ describe('Testing user useCases', () => {
         it('responds with deleted user', async () => {
             const response = await factory.app.delete(`/users/${testUser.id}`);
             expect(response.body.affected).toEqual(1);
+        });
+
+        it('responds with status 401 on creating jobRequest', async () => {
+            const response = await factory.app
+                .post('/jobrequests')
+                .set('Authorization', 'Bearer ' + userToken);
+            expect(response.status).toEqual(401);
+            expect(response.body.errors).toHaveLength(1);
+            expect(
+                response.body.errors.find(
+                    (error) => error.msg === 'Unauthorized',
+                ).msg,
+            ).toBeTruthy();
         });
     });
 });

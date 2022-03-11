@@ -22,7 +22,7 @@ const router: Router = express.Router();
 
 router.get(
     '/users',
-    [checkJwt, checkRole([Role.Client])],
+    [checkJwt, checkRole([Role.User, Role.Client])],
     getAllUsersController,
 );
 router.get('/users/:id', getUserByIdController);
