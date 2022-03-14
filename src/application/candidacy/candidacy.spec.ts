@@ -102,13 +102,16 @@ describe('Testing jobRequest useCases', () => {
         });
 
         it('responds with all candidacies', async () => {
-            const response = await factory.app.get('/candidacies');
+            const response = await factory.app
+                .get('/candidacies')
+                .set('Authorization', 'Bearer ' + userToken);
             expect(response.body).toHaveLength(CandidacySeed.length + 1);
         });
 
         it('responds with modified candidacy', async () => {
             const response = await factory.app
                 .put(`/candidacies/${testCandidacy.id}`)
+                .set('Authorization', 'Bearer ' + userToken)
                 .send(testModifiedCandidacy);
             const candidacy: Candidacy = response.body;
             expect(candidacy.status).toEqual(testModifiedCandidacy.status);
@@ -117,28 +120,31 @@ describe('Testing jobRequest useCases', () => {
         it('responds with error on update candidacy', async () => {
             const response = await factory.app
                 .put(`/candidacies/badID`)
+                .set('Authorization', 'Bearer ' + userToken)
                 .send(testModifiedCandidacy);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("Candidacy doesn't exist");
         });
 
         it('responds with candidacy by id', async () => {
-            const response = await factory.app.get(
-                `/candidacies/${testCandidacy.id}`,
-            );
+            const response = await factory.app
+                .get(`/candidacies/${testCandidacy.id}`)
+                .set('Authorization', 'Bearer ' + userToken);
             expect(response.body.id).toEqual(testCandidacy.id);
         });
 
         it('responds with error on delete candidacy', async () => {
-            const response = await factory.app.delete(`/candidacies/badID`);
+            const response = await factory.app
+                .delete(`/candidacies/badID`)
+                .set('Authorization', 'Bearer ' + userToken);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("Candidacy doesn't exist");
         });
 
         it('responds with deleted candidacy', async () => {
-            const response = await factory.app.delete(
-                `/candidacies/${testCandidacy.id}`,
-            );
+            const response = await factory.app
+                .delete(`/candidacies/${testCandidacy.id}`)
+                .set('Authorization', 'Bearer ' + userToken);
             expect(response.body.affected).toEqual(1);
         });
     });
