@@ -85,13 +85,16 @@ describe('Testing jobRequest useCases', () => {
         });
 
         it('responds with all jobRequests', async () => {
-            const response = await factory.app.get('/jobrequests');
+            const response = await factory.app
+                .get('/jobrequests')
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.body).toHaveLength(JobRequestSeed.length + 1);
         });
 
         it('responds with modified jobRequest', async () => {
             const response = await factory.app
                 .put(`/jobrequests/${testJobRequest.id}`)
+                .set('Authorization', 'Bearer ' + clientToken)
                 .send(testModifiedJobRequest);
             const jobRequest: JobRequest = response.body;
             expect(jobRequest.jobFunction).toEqual(
@@ -102,28 +105,31 @@ describe('Testing jobRequest useCases', () => {
         it('responds with error on update jobRequest', async () => {
             const response = await factory.app
                 .put(`/jobrequests/badID`)
+                .set('Authorization', 'Bearer ' + clientToken)
                 .send(testModifiedJobRequest);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("JobRequest doesn't exist");
         });
 
         it('responds with jobRequest by id', async () => {
-            const response = await factory.app.get(
-                `/jobrequests/${testJobRequest.id}`,
-            );
+            const response = await factory.app
+                .get(`/jobrequests/${testJobRequest.id}`)
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.body.id).toEqual(testJobRequest.id);
         });
 
         it('responds with error on delete jobRequest', async () => {
-            const response = await factory.app.delete(`/jobrequests/badID`);
+            const response = await factory.app
+                .delete(`/jobrequests/badID`)
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("JobRequest doesn't exist");
         });
 
         it('responds with deleted jobRequest', async () => {
-            const response = await factory.app.delete(
-                `/jobrequests/${testJobRequest.id}`,
-            );
+            const response = await factory.app
+                .delete(`/jobrequests/${testJobRequest.id}`)
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.body.affected).toEqual(1);
         });
     });

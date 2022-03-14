@@ -13,15 +13,31 @@ import Role from '../../../domain/models/role.model';
 
 const router: Router = express.Router();
 
-router.get('/jobrequests', getAllJobRequestsController);
-router.get('/jobrequests/:id', getJobRequestByIdController);
+router.get(
+    '/jobrequests',
+    [checkJwt, checkRole([Role.User, Role.Client])],
+    getAllJobRequestsController,
+);
+router.get(
+    '/jobrequests/:id',
+    [checkJwt, checkRole([Role.User, Role.Client])],
+    getJobRequestByIdController,
+);
 router.post(
     '/jobrequests',
     [checkJwt, checkRole([Role.Client])],
     CreateJobRequestValidators,
     CreateJobRequestController,
 );
-router.put('/jobrequests/:id', updateJobRequestController);
-router.delete('/jobrequests/:id', deleteJobRequestController);
+router.put(
+    '/jobrequests/:id',
+    [checkJwt, checkRole([Role.Client])],
+    updateJobRequestController,
+);
+router.delete(
+    '/jobrequests/:id',
+    [checkJwt, checkRole([Role.Client])],
+    deleteJobRequestController,
+);
 
 export default router;
