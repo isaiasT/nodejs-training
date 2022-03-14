@@ -7,17 +7,37 @@ import {
 } from '../controllers/placement/createPlacement.controller';
 import updatePlacementController from '../controllers/placement/updatePlacement.controller';
 import deletePlacementController from '../controllers/placement/deletePlacement.controller';
+import { checkJwt } from '../middlewares/checkJwt';
+import { checkRole } from '../middlewares/checkRole';
+import Role from '../../../domain/models/role.model';
 
 const router: Router = express.Router();
 
-router.get('/placements', getAllPlacementsController);
-router.get('/placements/:id', getPlacementByIdController);
+router.get(
+    '/placements',
+    [checkJwt, checkRole([Role.User, Role.Client])],
+    getAllPlacementsController,
+);
+router.get(
+    '/placements/:id',
+    [checkJwt, checkRole([Role.User, Role.Client])],
+    getPlacementByIdController,
+);
 router.post(
     '/placements',
+    [checkJwt, checkRole([Role.Client])],
     CreatePlacementValidators,
     CreatePlacementController,
 );
-router.put('/placements/:id', updatePlacementController);
-router.delete('/placements/:id', deletePlacementController);
+router.put(
+    '/placements/:id',
+    [checkJwt, checkRole([Role.Client])],
+    updatePlacementController,
+);
+router.delete(
+    '/placements/:id',
+    [checkJwt, checkRole([Role.Client])],
+    deletePlacementController,
+);
 
 export default router;

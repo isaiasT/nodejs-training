@@ -29,6 +29,21 @@ describe('Testing jobRequest useCases', () => {
         user: UserSeed[1],
     };
 
+    const testClient: Client = {
+        name: 'testName',
+        country: 'testCountry',
+        email: 'test@email.com',
+        password: 'Devandtalent1-',
+        id: '176232b9-4179-4e78-9fea-a4804d9725b5',
+    };
+
+    const loginClient = {
+        email: 'test@email.com',
+        password: 'Devandtalent1-',
+    };
+
+    let clientToken: string;
+
     beforeAll(async () => {
         await factory.init();
         await factory.connection.getRepository<User>(UserEntity).save(UserSeed);
@@ -44,6 +59,13 @@ describe('Testing jobRequest useCases', () => {
         await factory.connection
             .getRepository<Placement>(PlacementEntity)
             .save(PlacementSeed);
+        process.env.TOKEN_SECRET = 'testTokenSecret';
+        await factory.app.post('/clients/register').send(testClient);
+        const response = await factory.app
+            .post('/clients/login')
+            .send(loginClient);
+        const client = response.body;
+        clientToken = client.token;
     });
 
     afterAll(async () => {
@@ -52,7 +74,10 @@ describe('Testing jobRequest useCases', () => {
 
     describe('POST /placements', () => {
         it('responds with status 400 on create new placement', async () => {
-            const response = await factory.app.post('/placements').send();
+            const response = await factory.app
+                .post('/placements')
+                .set('Authorization', 'Bearer ' + clientToken)
+                .send();
             expect(response.status).toEqual(400);
             expect(response.body.errors).toHaveLength(3);
             expect(
@@ -75,19 +100,23 @@ describe('Testing jobRequest useCases', () => {
         it('responds with new placement', async () => {
             const response = await factory.app
                 .post('/placements')
+                .set('Authorization', 'Bearer ' + clientToken)
                 .send(testPlacement);
             const placement: Placement = response.body;
             expect(placement).toEqual(testPlacement);
         });
 
         it('responds with all placements', async () => {
-            const response = await factory.app.get('/placements');
+            const response = await factory.app
+                .get('/placements')
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.body).toHaveLength(PlacementSeed.length + 1);
         });
 
         it('responds with modified placement', async () => {
             const response = await factory.app
                 .put(`/placements/${testPlacement.id}`)
+                .set('Authorization', 'Bearer ' + clientToken)
                 .send(testModifiedPlacement);
             const placement: Placement = response.body;
             expect(placement.user).toEqual(testModifiedPlacement.user);
@@ -96,28 +125,31 @@ describe('Testing jobRequest useCases', () => {
         it('responds with error on update placement', async () => {
             const response = await factory.app
                 .put(`/placements/badID`)
+                .set('Authorization', 'Bearer ' + clientToken)
                 .send(testModifiedPlacement);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("Placement doesn't exist");
         });
 
         it('responds with placement by id', async () => {
-            const response = await factory.app.get(
-                `/placements/${testPlacement.id}`,
-            );
+            const response = await factory.app
+                .get(`/placements/${testPlacement.id}`)
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.body.id).toEqual(testPlacement.id);
         });
 
         it('responds with error on delete placement', async () => {
-            const response = await factory.app.delete(`/placements/badID`);
+            const response = await factory.app
+                .delete(`/placements/badID`)
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("Placement doesn't exist");
         });
 
         it('responds with deleted placement', async () => {
-            const response = await factory.app.delete(
-                `/placements/${testPlacement.id}`,
-            );
+            const response = await factory.app
+                .delete(`/placements/${testPlacement.id}`)
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.body.affected).toEqual(1);
         });
     });
