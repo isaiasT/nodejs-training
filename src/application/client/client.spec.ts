@@ -173,6 +173,7 @@ describe('Testing client useCases', () => {
         it('responds with status 400 on update client', async () => {
             const response = await factory.app
                 .put(`/clients/${testClient.id}`)
+                .set('Authorization', 'Bearer ' + clientToken)
                 .send(testBadModifiedClient);
             expect(response.status).toEqual(400);
             expect(response.body.errors).toHaveLength(1);
@@ -186,6 +187,7 @@ describe('Testing client useCases', () => {
         it('responds with modified client', async () => {
             const response = await factory.app
                 .put(`/clients/${testClient.id}`)
+                .set('Authorization', 'Bearer ' + clientToken)
                 .send(testModifiedClient);
             const client: Client = response.body;
             expect(client.name).toEqual(testModifiedClient.name);
@@ -194,26 +196,31 @@ describe('Testing client useCases', () => {
         it('responds with error on update client', async () => {
             const response = await factory.app
                 .put(`/clients/badID`)
+                .set('Authorization', 'Bearer ' + clientToken)
                 .send(testModifiedClient);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("Client doesn't exist");
         });
 
         it('responds with client by id', async () => {
-            const response = await factory.app.get(`/clients/${testClient.id}`);
+            const response = await factory.app
+                .get(`/clients/${testClient.id}`)
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.body.id).toEqual(testClient.id);
         });
 
         it('responds with error on delete client', async () => {
-            const response = await factory.app.delete(`/clients/badID`);
+            const response = await factory.app
+                .delete(`/clients/badID`)
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("Client doesn't exist");
         });
 
         it('responds with deleted client', async () => {
-            const response = await factory.app.delete(
-                `/clients/${testClient.id}`,
-            );
+            const response = await factory.app
+                .delete(`/clients/${testClient.id}`)
+                .set('Authorization', 'Bearer ' + clientToken);
             expect(response.body.affected).toEqual(1);
         });
 
