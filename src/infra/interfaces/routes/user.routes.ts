@@ -25,10 +25,23 @@ router.get(
     [checkJwt, checkRole([Role.User, Role.Client])],
     getAllUsersController,
 );
-router.get('/users/:id', getUserByIdController);
+router.get(
+    '/users/:id',
+    [checkJwt, checkRole([Role.User, Role.Client])],
+    getUserByIdController,
+);
 router.post('/users/register', RegisterUserValidators, RegisterUserController);
 router.post('/users/login', LoginUserValidators, LoginUserController);
-router.put('/users/:id', UpdateUserValidators, UpdateUserController);
-router.delete('/users/:id', deleteUserController);
+router.put(
+    '/users/:id',
+    [checkJwt, checkRole([Role.User])],
+    UpdateUserValidators,
+    UpdateUserController,
+);
+router.delete(
+    '/users/:id',
+    [checkJwt, checkRole([Role.User])],
+    deleteUserController,
+);
 
 export default router;

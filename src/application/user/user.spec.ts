@@ -179,6 +179,7 @@ describe('Testing user useCases', () => {
         it('responds with status 400 on update user', async () => {
             const response = await factory.app
                 .put(`/users/${testUser.id}`)
+                .set('Authorization', 'Bearer ' + userToken)
                 .send(testBadModifiedUser);
             expect(response.status).toEqual(400);
             expect(response.body.errors).toHaveLength(1);
@@ -192,6 +193,7 @@ describe('Testing user useCases', () => {
         it('responds with modified user', async () => {
             const response = await factory.app
                 .put(`/users/${testUser.id}`)
+                .set('Authorization', 'Bearer ' + userToken)
                 .send(testModifiedUser);
             const user: User = response.body;
             expect(user.name).toEqual(testModifiedUser.name);
@@ -200,24 +202,31 @@ describe('Testing user useCases', () => {
         it('responds with error on update user', async () => {
             const response = await factory.app
                 .put(`/users/badID`)
+                .set('Authorization', 'Bearer ' + userToken)
                 .send(testModifiedUser);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("User doesn't exist");
         });
 
         it('responds with user by id', async () => {
-            const response = await factory.app.get(`/users/${testUser.id}`);
+            const response = await factory.app
+                .get(`/users/${testUser.id}`)
+                .set('Authorization', 'Bearer ' + userToken);
             expect(response.body.id).toEqual(testUser.id);
         });
 
         it('responds with error on delete user', async () => {
-            const response = await factory.app.delete(`/users/badID`);
+            const response = await factory.app
+                .delete(`/users/badID`)
+                .set('Authorization', 'Bearer ' + userToken);
             expect(response.status).toEqual(400);
             expect(response.body.error).toEqual("User doesn't exist");
         });
 
         it('responds with deleted user', async () => {
-            const response = await factory.app.delete(`/users/${testUser.id}`);
+            const response = await factory.app
+                .delete(`/users/${testUser.id}`)
+                .set('Authorization', 'Bearer ' + userToken);
             expect(response.body.affected).toEqual(1);
         });
 
